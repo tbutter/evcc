@@ -22,15 +22,15 @@
 
 		<form ref="form" class="container mx-0 px-0" @submit.prevent="save">
 			<!-- InfluxDB Section -->
-			<div class="card mb-4 border-0 bg-light p-3">
+			<div class="mb-4">
 				<div class="d-flex justify-content-between align-items-center mb-3">
-					<h5 class="m-0 d-flex align-items-center gap-2">
+					<h6 class="m-0 d-flex align-items-center gap-2">
 						<InfluxIcon />
 						<span>{{ $t("config.timeseries.influxSection") }}</span>
-					</h5>
-					<span v-if="isInfluxConfigured" class="badge bg-success-subtle text-success">
+					</h6>
+					<Badge v-if="isInfluxConfigured" variant="success">
 						{{ $t("config.timeseries.configured") }}
-					</span>
+					</Badge>
 				</div>
 
 				<FormRow
@@ -39,12 +39,7 @@
 					example="http://localhost:8086"
 					optional
 				>
-					<input
-						id="influxUrl"
-						v-model="influx.url"
-						type="url"
-						class="form-control"
-					/>
+					<input id="influxUrl" v-model="influx.url" type="url" class="form-control" />
 				</FormRow>
 
 				<template v-if="influx.url">
@@ -54,7 +49,12 @@
 						:label="$t('config.influx.labelOrg')"
 						example="home"
 					>
-						<input id="influxOrg" v-model="influx.org" class="form-control" :required="!showV1" />
+						<input
+							id="influxOrg"
+							v-model="influx.org"
+							class="form-control"
+							:required="!showV1"
+						/>
 					</FormRow>
 					<FormRow
 						id="influxDatabase"
@@ -74,7 +74,12 @@
 						:label="$t('config.influx.labelToken')"
 						:help="$t('config.influx.descriptionToken')"
 					>
-						<input id="influxToken" v-model="influx.token" class="form-control" :required="!showV1" />
+						<input
+							id="influxToken"
+							v-model="influx.token"
+							class="form-control"
+							:required="!showV1"
+						/>
 					</FormRow>
 					<FormRow
 						v-if="showV1"
@@ -147,16 +152,18 @@
 				</template>
 			</div>
 
+			<hr class="my-4" />
+
 			<!-- OpenTelemetry Section -->
-			<div class="card mb-4 border-0 bg-light p-3">
+			<div class="mb-4">
 				<div class="d-flex justify-content-between align-items-center mb-3">
-					<h5 class="m-0 d-flex align-items-center gap-2">
-						<shopicon-regular-barchart class="text-primary" />
+					<h6 class="m-0 d-flex align-items-center gap-2">
+						<BarChartIcon />
 						<span>{{ $t("config.timeseries.opentelemetrySection") }}</span>
-					</h5>
-					<span v-if="isOtelConfigured" class="badge bg-success-subtle text-success">
+					</h6>
+					<Badge v-if="isOtelConfigured" variant="success">
 						{{ $t("config.timeseries.configured") }}
-					</span>
+					</Badge>
 				</div>
 
 				<FormRow
@@ -165,18 +172,11 @@
 					:example="$t('config.opentelemetry.exampleUrl')"
 					optional
 				>
-					<input
-						id="otelUrl"
-						v-model="opentelemetry.url"
-						class="form-control"
-					/>
+					<input id="otelUrl" v-model="opentelemetry.url" class="form-control" />
 				</FormRow>
 
 				<template v-if="opentelemetry.url">
-					<FormRow
-						id="otelProtocol"
-						:label="$t('config.opentelemetry.labelProtocol')"
-					>
+					<FormRow id="otelProtocol" :label="$t('config.opentelemetry.labelProtocol')">
 						<div class="d-flex gap-3 mt-1">
 							<div class="form-check">
 								<input
@@ -261,7 +261,9 @@
 			</div>
 
 			<div class="mt-4 d-flex justify-content-between gap-2 flex-column flex-sm-row">
-				<div class="d-flex justify-content-between order-2 order-sm-1 gap-2 flex-grow-1 flex-sm-grow-0">
+				<div
+					class="d-flex justify-content-between order-2 order-sm-1 gap-2 flex-grow-1 flex-sm-grow-0"
+				>
 					<button
 						type="button"
 						class="btn btn-link text-muted btn-cancel"
@@ -308,6 +310,8 @@
 import GenericModal from "../Helper/GenericModal.vue";
 import FormRow from "./FormRow.vue";
 import InfluxIcon from "../MaterialIcon/Influx.vue";
+import BarChartIcon from "../MaterialIcon/BarChart.vue";
+import Badge from "../Helper/Badge.vue";
 import api from "@/api";
 import store from "@/store";
 import deepClone from "@/utils/deepClone";
@@ -316,7 +320,7 @@ import { docsPrefix } from "@/i18n";
 
 export default {
 	name: "TimeSeriesModal",
-	components: { GenericModal, FormRow, InfluxIcon },
+	components: { GenericModal, FormRow, InfluxIcon, BarChartIcon, Badge },
 	emits: ["changed"],
 	data() {
 		return {
@@ -416,7 +420,9 @@ export default {
 				} else {
 					const colonIdx = trimmed.indexOf(":");
 					if (colonIdx !== -1) {
-						result[trimmed.slice(0, colonIdx).trim()] = trimmed.slice(colonIdx + 1).trim();
+						result[trimmed.slice(0, colonIdx).trim()] = trimmed
+							.slice(colonIdx + 1)
+							.trim();
 					}
 				}
 			}

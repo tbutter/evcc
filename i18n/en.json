@@ -488,7 +488,7 @@
     },
     "opentelemetry": {
       "description": "Exports metrics to an OpenTelemetry collector or compatible endpoint.",
-      "exampleUrl": "localhost:4317 or http://localhost:4318",
+      "exampleUrl": "otel:4317 or http://otel:4318",
       "helpHeaders": "e.g. Authorization=Bearer <token>",
       "labelCheckInsecure": "Allow unencrypted plaintext (gRPC) or skip TLS verification",
       "labelHeaders": "Headers / Authentication",
@@ -496,8 +496,8 @@
       "labelProtocol": "Protocol",
       "labelServiceName": "Service Name",
       "labelUrl": "Endpoint",
-      "protocolGrpc": "gRPC (port 4317)",
-      "protocolHttp": "HTTP (port 4318)",
+      "protocolGrpc": "gRPC",
+      "protocolHttp": "HTTP",
       "title": "OpenTelemetry"
     },
     "timeseries": {

@@ -368,7 +368,7 @@
 							data-testid="timeseries"
 							@edit="openModal('timeseries')"
 						>
-							<template #icon><shopicon-regular-barchart /></template>
+							<template #icon><BarChartIcon /></template>
 							<template #tags>
 								<DeviceTags :tags="timeSeriesTags" />
 							</template>
@@ -649,7 +649,7 @@ import HemsIcon from "../components/MaterialIcon/Hems.vue";
 import HemsModal from "../components/Config/HemsModal.vue";
 import ShmIcon from "../components/MaterialIcon/Shm.vue";
 import ShmModal from "@/components/Config/ShmModal.vue";
-import InfluxIcon from "../components/MaterialIcon/Influx.vue";
+import BarChartIcon from "../components/MaterialIcon/BarChart.vue";
 import TimeSeriesModal from "../components/Config/TimeSeriesModal.vue";
 import LoadpointModal from "../components/Config/LoadpointModal.vue";
 import LoadpointIcon from "../components/MaterialIcon/Loadpoint.vue";
@@ -767,7 +767,7 @@ export default defineComponent({
 		HemsModal,
 		ShmModal,
 		ShmIcon,
-		InfluxIcon,
+		BarChartIcon,
 		TimeSeriesModal,
 		MessagingLegacyModal,
 		MessagingModal,
