@@ -361,16 +361,16 @@
 							</template>
 						</DeviceCard>
 						<DeviceCard
-							:title="$t('config.influx.title')"
+							:title="$t('config.timeseries.title')"
 							editable
-							:error="hasClassError('influx')"
-							:unconfigured="isUnconfigured(influxTags)"
-							data-testid="influx"
-							@edit="openModal('influx')"
+							:error="hasClassError('influx') || hasClassError('opentelemetry')"
+							:unconfigured="isUnconfigured(timeSeriesTags)"
+							data-testid="timeseries"
+							@edit="openModal('timeseries')"
 						>
-							<template #icon><InfluxIcon /></template>
+							<template #icon><shopicon-regular-barchart /></template>
 							<template #tags>
-								<DeviceTags :tags="influxTags" />
+								<DeviceTags :tags="timeSeriesTags" />
 							</template>
 						</DeviceCard>
 						<DeviceCard
@@ -548,7 +548,7 @@
 					@disable="({ id, disable }) => handleDisable('meter', id, disable)"
 				/>
 				<ChargerModal :is-sponsor="isSponsor" :ocpp="ocpp" @changed="chargerChanged" />
-				<InfluxModal @changed="loadDirty" />
+				<TimeSeriesModal @changed="loadDirty" />
 				<MqttModal @changed="loadDirty" />
 				<NetworkModal @changed="loadDirty" />
 				<ControlModal @changed="loadDirty" />
@@ -650,7 +650,7 @@ import HemsModal from "../components/Config/HemsModal.vue";
 import ShmIcon from "../components/MaterialIcon/Shm.vue";
 import ShmModal from "@/components/Config/ShmModal.vue";
 import InfluxIcon from "../components/MaterialIcon/Influx.vue";
-import InfluxModal from "../components/Config/InfluxModal.vue";
+import TimeSeriesModal from "../components/Config/TimeSeriesModal.vue";
 import LoadpointModal from "../components/Config/LoadpointModal.vue";
 import LoadpointIcon from "../components/MaterialIcon/Loadpoint.vue";
 import MessagingModal from "../components/Config/Messaging/MessagingModal.vue";
@@ -768,7 +768,7 @@ export default defineComponent({
 		ShmModal,
 		ShmIcon,
 		InfluxIcon,
-		InfluxModal,
+		TimeSeriesModal,
 		MessagingLegacyModal,
 		MessagingModal,
 		MessengerModal,
@@ -887,20 +887,21 @@ export default defineComponent({
 			const integrationTags: Record<string, DeviceTags> = {
 				mqtt: this.mqttTags,
 				messaging: this.messagingTags,
-				influx: this.influxTags,
+				timeseries: this.timeSeriesTags,
 				circuits: this.circuitsTags,
 				hems: this.hemsTags,
 				modbusproxy: this.modbusproxyTags,
 				remote: this.remoteTags,
 				optimizer: this.optimizerTags,
 			};
-			const errorClass: Record<string, string> = {
-				messaging: "messenger",
-				circuits: "circuit",
+			const errorClass: Record<string, string[]> = {
+				messaging: ["messenger"],
+				circuits: ["circuit"],
+				timeseries: ["influx", "opentelemetry"],
 			};
 			const integrations = Object.entries(integrationTags).map(([key, tags]) => ({
 				key,
-				error: errorClass[key] || key,
+				errors: errorClass[key] || [key],
 				configured: !this.isUnconfigured(tags),
 			}));
 			const entries: Omit<SectionEntry, "title">[] = [
@@ -972,7 +973,7 @@ export default defineComponent({
 							.filter((i) => i.configured)
 							.map((i) => this.$t(`config.${i.key}.title`))
 							.join(" · ") || undefined,
-					error: integrations.some((i) => this.hasClassError(i.error)),
+					error: integrations.some((i) => i.errors.some((c) => this.hasClassError(c))),
 					warning: Object.values(this.authProviders || {}).some((p) => !p.authenticated),
 				},
 				{
@@ -1116,12 +1117,13 @@ export default defineComponent({
 				topic: { value: topic },
 			};
 		},
-		influxTags(): DeviceTags {
-			const { url, database, org } = store.state?.influx || {};
-			if (!url) return { configured: { value: false } };
-			const result = { url: { value: url }, bucket: {}, org: {} };
-			if (database) result.bucket = { value: database };
-			if (org) result.org = { value: org };
+		timeSeriesTags(): DeviceTags {
+			const { url: influxUrl } = store.state?.influx || {};
+			const { url: otelUrl } = store.state?.opentelemetry || {};
+			if (!influxUrl && !otelUrl) return { configured: { value: false } };
+			const result: DeviceTags = {};
+			if (influxUrl) result["influx"] = { value: influxUrl };
+			if (otelUrl) result["opentelemetry"] = { value: otelUrl };
 			return result;
 		},
 		vehicleOptions(): VehicleOption[] {

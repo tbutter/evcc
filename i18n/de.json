@@ -263,6 +263,7 @@
       "gridPrice": "Netzbezugspreis",
       "heaterTempLimit": "Heizungslimit",
       "identifier": "RFID-Kennung",
+      "influx": "InfluxDB",
       "loginBlocked": "Login-Limit erreicht",
       "max": "max",
       "maxCurrent": "Max. Stromstärke",
@@ -270,6 +271,7 @@
       "messengers": "Dienste",
       "no": "Nein",
       "odometer": "Kilometerstand",
+      "opentelemetry": "OpenTelemetry",
       "org": "Organisation",
       "outdoorTemp": "Außentemperatur",
       "phaseCurrents": "Strom",
@@ -483,6 +485,28 @@
       "title": "InfluxDB",
       "v1Support": "Unterstützung für InfluxDB 1.x?",
       "v2Support": "Zurück zu InfluxDB 2.x"
+    },
+    "opentelemetry": {
+      "description": "Exportiert Messwerte an einen OpenTelemetry Collector oder kompatiblen Endpunkt.",
+      "exampleUrl": "localhost:4317 oder http://localhost:4318",
+      "helpHeaders": "z.B. Authorization=Bearer <token>",
+      "labelCheckInsecure": "Unverschlüsseltes Plaintext (gRPC) erlauben oder TLS-Zertifikatsprüfung überspringen",
+      "labelHeaders": "Header / Authentifizierung",
+      "labelInsecure": "Zertifikatsüberprüfung",
+      "labelProtocol": "Protokoll",
+      "labelServiceName": "Service-Name",
+      "labelUrl": "Endpunkt",
+      "protocolGrpc": "gRPC (Port 4317)",
+      "protocolHttp": "HTTP (Port 4318)",
+      "title": "OpenTelemetry"
+    },
+    "timeseries": {
+      "clearAll": "Alle entfernen",
+      "configured": "Konfiguriert",
+      "description": "Schreibt Ladedaten und andere Metriken in InfluxDB und OpenTelemetry. Verwende Grafana oder andere Tools, um die Daten zu visualisieren.",
+      "influxSection": "InfluxDB",
+      "opentelemetrySection": "OpenTelemetry",
+      "title": "Zeitreihen-Export"
     },
     "loadpoint": {
       "addCharger": {

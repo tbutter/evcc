@@ -80,6 +80,20 @@ export interface InfluxConfig {
   insecure?: boolean;
 }
 
+/** OpenTelemetry exporter configuration. */
+export interface OpenTelemetryConfig {
+  /** Collector endpoint URL. */
+  url: string;
+  /** Protocol: "grpc", "http/protobuf", or "http/json". */
+  protocol?: string;
+  /** Headers for authentication or routing. Redacted. */
+  headers?: Record<string, string>;
+  /** Skip TLS verification or allow plaintext. */
+  insecure?: boolean;
+  /** Service name resource attribute. */
+  serviceName?: string;
+}
+
 /** Network configuration. */
 export interface Network {
   /** URL schema, http or https. */
@@ -259,6 +273,8 @@ export interface State {
   mqtt?: MqttConfig;
   /** InfluxDB integration configuration. */
   influx?: InfluxConfig;
+  /** OpenTelemetry exporter configuration. */
+  opentelemetry?: OpenTelemetryConfig;
   /** Network configuration. */
   network?: Network;
   /** Home energy management system integration. */

@@ -52,6 +52,7 @@ type All struct {
 	Javascript      []Javascript
 	Go              []Go
 	Influx          Influx
+	OpenTelemetry   OpenTelemetry
 	EEBus           eebus.Config
 	HEMS            Hems
 	SHM             shm.Config
@@ -140,6 +141,30 @@ func (c Influx) Redacted() any {
 		User:     c.User,
 		Password: util.Masked(c.Password),
 		Insecure: c.Insecure,
+	}
+}
+
+// OpenTelemetry is the opentelemetry exporter configuration
+type OpenTelemetry struct {
+	URL         string            `json:"url"`
+	Protocol    string            `json:"protocol"`
+	Headers     map[string]string `json:"headers"`
+	Insecure    bool              `json:"insecure"`
+	ServiceName string            `json:"serviceName"`
+}
+
+// Redacted implements the redactor interface used by the tee publisher
+func (c OpenTelemetry) Redacted() any {
+	redactedHeaders := make(map[string]string)
+	for k, v := range c.Headers {
+		redactedHeaders[k] = util.Masked(v)
+	}
+	return OpenTelemetry{
+		URL:         c.URL,
+		Protocol:    c.Protocol,
+		Headers:     redactedHeaders,
+		Insecure:    c.Insecure,
+		ServiceName: c.ServiceName,
 	}
 }
 

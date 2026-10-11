@@ -307,6 +307,22 @@ func runRoot(cmd *cobra.Command, args []string) {
 		site, err = configureSiteAndLoadpoints(&conf)
 	}
 
+	// setup time series exporters
+	dedupeTimeSeries := pipe.NewDeduplicator(30*time.Minute,
+		keys.VehicleSoc,
+		keys.VehicleRange,
+		keys.VehicleOdometer,
+		keys.TariffCo2,
+		keys.TariffCo2Home,
+		keys.TariffCo2Loadpoints,
+		keys.TariffFeedIn,
+		keys.TariffGrid,
+		keys.TariffPriceHome,
+		keys.TariffPriceLoadpoints,
+		keys.TariffSolar,
+		keys.ChargedEnergy,
+		keys.ChargeRemainingEnergy)
+
 	// setup influx
 	if err == nil {
 		influx, ierr := configureInflux(&conf.Influx)
@@ -315,22 +331,21 @@ func runRoot(cmd *cobra.Command, args []string) {
 		}
 
 		if err == nil && influx != nil {
-			// eliminate duplicate values
-			dedupe := pipe.NewDeduplicator(30*time.Minute,
-				keys.VehicleSoc,
-				keys.VehicleRange,
-				keys.VehicleOdometer,
-				keys.TariffCo2,
-				keys.TariffCo2Home,
-				keys.TariffCo2Loadpoints,
-				keys.TariffFeedIn,
-				keys.TariffGrid,
-				keys.TariffPriceHome,
-				keys.TariffPriceLoadpoints,
-				keys.TariffSolar,
-				keys.ChargedEnergy,
-				keys.ChargeRemainingEnergy)
-			go influx.Run(site, dedupe.Pipe(
+			go influx.Run(site, dedupeTimeSeries.Pipe(
+				pipe.NewDropper(append(ignoreLogs, ignoreEmpty, keys.Forecast)...).Pipe(tee.Attach()),
+			))
+		}
+	}
+
+	// setup opentelemetry
+	if err == nil {
+		otelClient, oerr := configureOpenTelemetry(&conf.OpenTelemetry)
+		if oerr != nil {
+			err = wrapErrorWithClass(ClassOpenTelemetry, oerr)
+		}
+
+		if err == nil && otelClient != nil {
+			go otelClient.Run(site, dedupeTimeSeries.Pipe(
 				pipe.NewDropper(append(ignoreLogs, ignoreEmpty, keys.Forecast)...).Pipe(tee.Attach()),
 			))
 		}
@@ -424,6 +439,7 @@ func runRoot(cmd *cobra.Command, args []string) {
 	}}
 	valueChan <- util.Param{Key: keys.Shm, Val: conf.SHM}
 	valueChan <- util.Param{Key: keys.Influx, Val: conf.Influx}
+	valueChan <- util.Param{Key: keys.OpenTelemetry, Val: conf.OpenTelemetry}
 	valueChan <- util.Param{Key: keys.Interval, Val: conf.Interval}
 	valueChan <- util.Param{Key: keys.Messaging, Val: globalconfig.ConfigStatus{
 		YamlSource: yamlSource.messaging,
