@@ -779,6 +779,28 @@ func configureInflux(conf *globalconfig.Influx) (*server.Influx, error) {
 	return influx, nil
 }
 
+// configureOpenTelemetry configures opentelemetry exporter
+func configureOpenTelemetry(conf *globalconfig.OpenTelemetry) (*server.OpenTelemetry, error) {
+	// read settings
+	if settings.Exists(keys.OpenTelemetry) {
+		if err := settings.Json(keys.OpenTelemetry, &conf); err != nil {
+			return nil, err
+		}
+	}
+
+	if conf.URL == "" {
+		return nil, nil
+	}
+
+	return server.NewOpenTelemetryClient(
+		conf.URL,
+		conf.Protocol,
+		conf.Headers,
+		conf.Insecure,
+		conf.ServiceName,
+	)
+}
+
 // setup mqtt
 func configureMqtt(conf *globalconfig.Mqtt) error {
 	// migrate settings

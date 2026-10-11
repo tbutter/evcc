@@ -26,6 +26,7 @@ const (
 	ClassHEMS
 	ClassSHM
 	ClassInflux
+	ClassOpenTelemetry
 	ClassMessenger
 	ClassSponsorship
 	ClassLoadpoint

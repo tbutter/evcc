@@ -9,6 +9,7 @@ const (
 	Network            = "network"
 	Mqtt               = "mqtt"
 	Influx             = "influx"
+	OpenTelemetry      = "opentelemetry"
 	EEBus              = "eebus"
 	Hems               = "hems"
 	Shm                = "shm"

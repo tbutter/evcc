@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-const _ClassName = "configfilemeterchargervehicletariffcircuitsitemqttdatabasemodbusproxyeebusjavascriptgohemsshminfluxmessengersponsorshiploadpointcurtailer"
+const _ClassName = "configfilemeterchargervehicletariffcircuitsitemqttdatabasemodbusproxyeebusjavascriptgohemsshminfluxopentelemetrymessengersponsorshiploadpointcurtailer"
 
-var _ClassIndex = [...]uint8{0, 10, 15, 22, 29, 35, 42, 46, 50, 58, 69, 74, 84, 86, 90, 93, 99, 108, 119, 128, 137}
+var _ClassIndex = [...]uint8{0, 10, 15, 22, 29, 35, 42, 46, 50, 58, 69, 74, 84, 86, 90, 93, 99, 112, 121, 132, 141, 150}
 
-const _ClassLowerName = "configfilemeterchargervehicletariffcircuitsitemqttdatabasemodbusproxyeebusjavascriptgohemsshminfluxmessengersponsorshiploadpointcurtailer"
+const _ClassLowerName = "configfilemeterchargervehicletariffcircuitsitemqttdatabasemodbusproxyeebusjavascriptgohemsshminfluxopentelemetrymessengersponsorshiploadpointcurtailer"
 
 func (i Class) String() string {
 	i -= 1
@@ -41,13 +41,14 @@ func _ClassNoOp() {
 	_ = x[ClassHEMS-(14)]
 	_ = x[ClassSHM-(15)]
 	_ = x[ClassInflux-(16)]
-	_ = x[ClassMessenger-(17)]
-	_ = x[ClassSponsorship-(18)]
-	_ = x[ClassLoadpoint-(19)]
-	_ = x[ClassCurtailer-(20)]
+	_ = x[ClassOpenTelemetry-(17)]
+	_ = x[ClassMessenger-(18)]
+	_ = x[ClassSponsorship-(19)]
+	_ = x[ClassLoadpoint-(20)]
+	_ = x[ClassCurtailer-(21)]
 }
 
-var _ClassValues = []Class{ClassConfigFile, ClassMeter, ClassCharger, ClassVehicle, ClassTariff, ClassCircuit, ClassSite, ClassMqtt, ClassDatabase, ClassModbusProxy, ClassEEBus, ClassJavascript, ClassGo, ClassHEMS, ClassSHM, ClassInflux, ClassMessenger, ClassSponsorship, ClassLoadpoint, ClassCurtailer}
+var _ClassValues = []Class{ClassConfigFile, ClassMeter, ClassCharger, ClassVehicle, ClassTariff, ClassCircuit, ClassSite, ClassMqtt, ClassDatabase, ClassModbusProxy, ClassEEBus, ClassJavascript, ClassGo, ClassHEMS, ClassSHM, ClassInflux, ClassOpenTelemetry, ClassMessenger, ClassSponsorship, ClassLoadpoint, ClassCurtailer}
 
 var _ClassNameToValueMap = map[string]Class{
 	_ClassName[0:10]:    ClassConfigFile,
@@ -66,10 +67,11 @@ var _ClassNameToValueMap = map[string]Class{
 	_ClassName[86:90]:   ClassHEMS,
 	_ClassName[90:93]:   ClassSHM,
 	_ClassName[93:99]:   ClassInflux,
-	_ClassName[99:108]:  ClassMessenger,
-	_ClassName[108:119]: ClassSponsorship,
-	_ClassName[119:128]: ClassLoadpoint,
-	_ClassName[128:137]: ClassCurtailer,
+	_ClassName[99:112]:  ClassOpenTelemetry,
+	_ClassName[112:121]: ClassMessenger,
+	_ClassName[121:132]: ClassSponsorship,
+	_ClassName[132:141]: ClassLoadpoint,
+	_ClassName[141:150]: ClassCurtailer,
 }
 
 var _ClassLowerNameToValueMap = map[string]Class{
@@ -89,10 +91,11 @@ var _ClassLowerNameToValueMap = map[string]Class{
 	_ClassLowerName[86:90]:   ClassHEMS,
 	_ClassLowerName[90:93]:   ClassSHM,
 	_ClassLowerName[93:99]:   ClassInflux,
-	_ClassLowerName[99:108]:  ClassMessenger,
-	_ClassLowerName[108:119]: ClassSponsorship,
-	_ClassLowerName[119:128]: ClassLoadpoint,
-	_ClassLowerName[128:137]: ClassCurtailer,
+	_ClassLowerName[99:112]:  ClassOpenTelemetry,
+	_ClassLowerName[112:121]: ClassMessenger,
+	_ClassLowerName[121:132]: ClassSponsorship,
+	_ClassLowerName[132:141]: ClassLoadpoint,
+	_ClassLowerName[141:150]: ClassCurtailer,
 }
 
 var _ClassNames = []string{
@@ -112,10 +115,11 @@ var _ClassNames = []string{
 	_ClassName[86:90],
 	_ClassName[90:93],
 	_ClassName[93:99],
-	_ClassName[99:108],
-	_ClassName[108:119],
-	_ClassName[119:128],
-	_ClassName[128:137],
+	_ClassName[99:112],
+	_ClassName[112:121],
+	_ClassName[121:132],
+	_ClassName[132:141],
+	_ClassName[141:150],
 }
 
 // ClassString retrieves an enum value from the enum constants string name.

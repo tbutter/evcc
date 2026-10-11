@@ -673,6 +673,7 @@ export default defineComponent({
 					"modbusproxy",
 					"mqtt",
 					"influx",
+					"opentelemetry",
 					"shm",
 					"interval",
 					"residualPower",
