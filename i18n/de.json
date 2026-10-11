@@ -490,7 +490,7 @@
     },
     "opentelemetry": {
       "description": "Exportiert Messwerte an einen OpenTelemetry Collector oder kompatiblen Endpunkt.",
-      "exampleUrl": "localhost:4317 oder http://localhost:4318",
+      "exampleUrl": "otel:4317 oder http://otel:4318",
       "helpHeaders": "z.B. Authorization=Bearer <token>",
       "labelCheckInsecure": "Unverschlüsseltes Plaintext (gRPC) erlauben oder TLS-Zertifikatsprüfung überspringen",
       "labelHeaders": "Header / Authentifizierung",
@@ -498,8 +498,8 @@
       "labelProtocol": "Protokoll",
       "labelServiceName": "Service-Name",
       "labelUrl": "Endpunkt",
-      "protocolGrpc": "gRPC (Port 4317)",
-      "protocolHttp": "HTTP (Port 4318)",
+      "protocolGrpc": "gRPC",
+      "protocolHttp": "HTTP",
       "title": "OpenTelemetry"
     },
     "timeseries": {
