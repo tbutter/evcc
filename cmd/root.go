@@ -310,20 +310,26 @@ func runRoot(cmd *cobra.Command, args []string) {
 	}
 
 	// setup time series exporters
-	dedupeTimeSeries := pipe.NewDeduplicator(30*time.Minute,
-		keys.VehicleSoc,
-		keys.VehicleRange,
-		keys.VehicleOdometer,
-		keys.TariffCo2,
-		keys.TariffCo2Home,
-		keys.TariffCo2Loadpoints,
-		keys.TariffFeedIn,
-		keys.TariffGrid,
-		keys.TariffPriceHome,
-		keys.TariffPriceLoadpoints,
-		keys.TariffSolar,
-		keys.ChargedEnergy,
-		keys.ChargeRemainingEnergy)
+	newTimeSeriesPipe := func() <-chan util.Param {
+		return pipe.NewDeduplicator(30*time.Minute,
+			keys.VehicleSoc,
+			keys.VehicleRange,
+			keys.VehicleOdometer,
+			keys.TariffCo2,
+			keys.TariffCo2Home,
+			keys.TariffCo2Loadpoints,
+			keys.TariffFeedIn,
+			keys.TariffGrid,
+			keys.TariffPriceHome,
+			keys.TariffPriceLoadpoints,
+			keys.TariffSolar,
+			keys.ChargedEnergy,
+			"sessionEnergy",
+			keys.ChargeRemainingEnergy,
+		).Pipe(
+			pipe.NewDropper(append(ignoreLogs, ignoreEmpty, keys.Forecast)...).Pipe(tee.Attach()),
+		)
+	}
 
 	// setup influx
 	if err == nil {
@@ -333,9 +339,7 @@ func runRoot(cmd *cobra.Command, args []string) {
 		}
 
 		if err == nil && influx != nil {
-			go influx.Run(site, dedupeTimeSeries.Pipe(
-				pipe.NewDropper(append(ignoreLogs, ignoreEmpty, keys.Forecast)...).Pipe(tee.Attach()),
-			))
+			go influx.Run(site, newTimeSeriesPipe())
 		}
 	}
 
@@ -347,9 +351,7 @@ func runRoot(cmd *cobra.Command, args []string) {
 		}
 
 		if err == nil && otelClient != nil {
-			go otelClient.Run(site, dedupeTimeSeries.Pipe(
-				pipe.NewDropper(append(ignoreLogs, ignoreEmpty, keys.Forecast)...).Pipe(tee.Attach()),
-			))
+			go otelClient.Run(site, newTimeSeriesPipe())
 		}
 	}
 
